@@ -129,11 +129,6 @@
                 var damage = Math.floor(Math.random() * (max - min + 1)) + min;
                 return damage > 0? damage : 0
             },
-            // getDamage(from_who) {
-            //     var attacker = from_who === "player" ? this.player : this.monster
-            //     var damage = this.randomizer(attacker.minDamage, attacker.maxDamage)
-            //     return damage
-            // },
             makeDamage(attacker, defender) {
                 var damage = this.randomizer(attacker.minDamage, attacker.maxDamage)
                 defender.health -= damage
