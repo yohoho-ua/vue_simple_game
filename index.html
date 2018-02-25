@@ -43,9 +43,9 @@
         </section>
         <section class="row log">
             <div class="small-12 columns">
-                <ul>
-                    <li>
-
+                <ul v-for="item in log">
+                    <li :style="item.style">
+                        {{ item.text }}
                     </li>
                 </ul>
             </div>
@@ -73,7 +73,8 @@
                     health: 100,
                     minDamage: 7,
                     maxDamage: 10
-                }
+                },
+                log : []
             }
         },
         computed: {
@@ -108,6 +109,7 @@
             heal() {
                 var heal = this.randomizer(this.player.minDamage, this.player.maxDamage)
                 this.player.health += heal
+                this.log.unshift({style:{color: "green"}, text: this.player.name + " heals for " + heal});
                 console.log(this.player.name + " heals for " + heal);
                 console.log("player health = " + this.player.health + ", monster health = " + this.monster.health);
                 this.finalizeRound()
@@ -132,6 +134,7 @@
             makeDamage(attacker, defender) {
                 var damage = this.randomizer(attacker.minDamage, attacker.maxDamage)
                 defender.health -= damage
+                this.log.unshift({style:{color: "red"}, text: attacker.name + " hits " + defender.name + " for " + damage});
                 console.log(attacker.name + " hits " + defender.name + " for " + damage);
                 console.log("player health = " + this.player.health + ", monster health = " + this.monster.health);
                 this.checkGameStatus(defender)
@@ -139,6 +142,7 @@
             makeSDamage(attacker, defender) {
                 var damage = this.randomizer(attacker.minDamage*-2, attacker.maxDamage*2.5)
                 defender.health -= damage
+                this.log.unshift({style:{color: "orange"}, text: attacker.name + " hits " + defender.name + " for " + damage});
                 console.log(attacker.name + " hits " + defender.name + " for " + damage);
                 console.log("player health = " + this.player.health + ", monster health = " + this.monster.health);
                 this.checkGameStatus(defender)
@@ -151,6 +155,7 @@
             },
             finishGame(looser) {
                 this.inGame = false
+                this.log.unshift({style:{color: "blue"}, text: looser.name === "You"? "You loose!" : "You win!"});
                 console.log(looser.name === "You"? "You loose!" : "You win!");
             }
         },
