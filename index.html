@@ -41,7 +41,7 @@
                 <button @click="giveUp" id="give-up">GIVE UP</button>
             </div>
         </section>
-        <section class="row log">
+        <section v-if="log.length > 0"class="row log">
             <div class="small-12 columns">
                 <ul v-for="item in log">
                     <li :style="item.style">
@@ -109,6 +109,9 @@
             heal() {
                 var heal = this.randomizer(this.player.minDamage, this.player.maxDamage)
                 this.player.health += heal
+                if (this.player.health > 100) {
+                    this.player.health = 100
+                }
                 this.log.unshift({style:{color: "green"}, text: this.player.name + " heals for " + heal});
                 console.log(this.player.name + " heals for " + heal);
                 console.log("player health = " + this.player.health + ", monster health = " + this.monster.health);
@@ -157,6 +160,7 @@
                 this.inGame = false
                 this.log.unshift({style:{color: "blue"}, text: looser.name === "You"? "You loose!" : "You win!"});
                 console.log(looser.name === "You"? "You loose!" : "You win!");
+                this.log = []
             }
         },
     })
